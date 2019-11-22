@@ -20,8 +20,7 @@ public class Driver
     }
   }
 
-  static Graph graph;
-
+  static Graph myGraph;
 
 
   static void addEdge(Graph graph, int src, int dest)
@@ -34,16 +33,23 @@ public class Driver
     // iterate over vertices
     for(int v = 0; v < graph.V; v++)
     {
-      out.println("Outgoing edges of vertex "+ v);
+      out.println("Outgoing edges on vertex "+ v);
       // get each edge of v
       for(Integer edge: graph.adjList.get(v)) {
-        out.print(v + " -> " + edge + "  ");
+        out.print(v + "->" + edge + "  ");
       }
-      out.println("\n");
+      out.println();
     }
   }
 
-  //
+  public static Graph transpose(Graph graph) {
+    Graph transpose = new Graph(graph.V);
+    for (int v = 0; v < graph.V; v++)
+        for (Integer u : graph.adjList.get(v))
+            addEdge(transpose, u, v);
+    return transpose;
+  }
+
   public static void initializeFromFile(String fname) {
     ArrayList<String> input = new ArrayList<String>();
     Scanner scanner;
@@ -52,17 +58,15 @@ public class Driver
       while (scanner.hasNextLine())
         input.add(scanner.nextLine());
       int vertices = Integer.parseInt(input.get(0));
-      graph = new Graph(vertices);
+      myGraph = new Graph(vertices);
       // remove 0th element - size of graph
       input.remove(0);
       // adds vertices
       String[] numbers;
       for (String line : input) {
         numbers = line.split(" ");
-        addEdge(graph, Integer.parseInt(numbers[0]), Integer.parseInt(numbers[1]));
+        addEdge(myGraph, Integer.parseInt(numbers[0]), Integer.parseInt(numbers[1]));
       }
-      input.remove(0);
-
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -75,8 +79,13 @@ public class Driver
       out.println("Incorrect number of args: java Driver <FileName>.txt");
       return;
     }
-
     initializeFromFile(args[0]);
-    printGraph(graph);
+    printGraph(myGraph);
+
+    Graph transpose = transpose(myGraph);
+
+    out.println("========= GRAPH TRANSPOSE =======");
+    printGraph(transpose);
+
   }
 }
