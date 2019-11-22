@@ -40,7 +40,8 @@ public class Driver
       return;
     }
     initializeFromFile(args[0]);
-
+    
+    out.println("========= GRAPH =======")
     graph.printGraph();
     Graph transpose = graph.transpose();
     out.println("========= GRAPH TRANSPOSE =======");
