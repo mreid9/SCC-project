@@ -41,12 +41,14 @@ public class Driver
     }
     initializeFromFile(args[0]);
     
-    out.println("========= GRAPH =======")
+    out.println("========= GRAPH =======");
     graph.printGraph();
     Graph transpose = graph.transpose();
     out.println("========= GRAPH TRANSPOSE =======");
     transpose.printGraph();
     out.println("========= DFS =======");
     graph.dfs();
+    out.println("========= TARJAN =======");
+    graph.tarjan();
   }
 }

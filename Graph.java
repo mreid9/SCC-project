@@ -77,4 +77,49 @@ public class Graph
     // call DFS on transpose
     // add an SCC each time a dead end is reached
   }
+
+  private int tarjanId;
+  private int[] tarjanIds;
+  private int[] tarjanLow;
+  private Stack<Integer> tarjanStack;
+
+  public void tarjan() {
+	tarjanId = 0;
+	tarjanIds = new int[V];
+	tarjanLow = new int[V];
+	tarjanStack = new Stack<Integer>();
+
+	// Set all node id's to be unvisited
+	for (int i = 0; i < V; i++) tarjanIds[i] = -1;
+
+	// Iterate and run tarjanDFS on each node
+	for (int i = 0; i < V; i++)
+		if (tarjanIds[i] == -1) tarjanDFS(i);
+	
+	// TODO: Use the low array to print out nodes in the same SCC
+  	out.println("SCC's printed here");
+  }
+
+  // Recursive helper function for the tarjan algorithm
+  private void tarjanDFS(int at) {
+  	tarjanStack.push(at);
+	tarjanIds[at] = tarjanLow[at] = tarjanId++;
+
+	// Loop through all adjacent nodes connected to this one
+	for (Integer to: adjList.get(at)) {
+		// If an adjacent node is unvisited, recursively run the DFS function on it
+		if (tarjanIds[to] == -1) tarjanDFS(to);
+
+		// When backtrack, if the new node is on the stack, set the current node's low to the minimum of the two lows
+		if (tarjanStack.contains(to)) tarjanLow[at] = (tarjanLow[at] <= tarjanLow[to]) ? tarjanLow[at] : tarjanLow[to];
+	}
+
+	// Indicates the closing of an SCC, pop values of the SCC off the stack
+	if (tarjanIds[at] == tarjanLow[at]) {
+		for (Integer node = tarjanStack.pop();; node = tarjanStack.pop()) {
+			tarjanLow[node] = tarjanIds[at];
+			if (node == at) break;
+		}
+	}
+  }
 }
