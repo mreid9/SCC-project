@@ -87,15 +87,16 @@ public class Graph
       // Calls our transpose function to get the transposed graph
       Graph transposed = transpose();
 
-      // Resets the visited array to ensure all vertices have not been checked yet
-      // since we are now dealing with the transposed graph
+      // Resets the visited array to ensure all vertices have not been checked yet since we are now dealing with the transposed graph
       for(int v = 0; v < V; v++) kosarajuVisited[v] = false;
 
+      // for every vertex in the ordered stack
       while(!kosarajuStack.empty()) {
           int currVertex = (int)kosarajuStack.pop();
 
+          // if the current vertex has not been visited
           if(kosarajuVisited[currVertex] == false) {
-              kosarajuDFSPrinter(currVertex, kosarajuVisited);
+              kosarajuDFSPrinter(currVertex, kosarajuVisited);  // calls DFS helper with the current vertex and the transposed graph
               System.out.println();
           }
       }
@@ -105,23 +106,28 @@ public class Graph
     // add an SCC each time a dead end is reached
   }
 
-// Helper method for kosarajus algorithm to properly order vertices based on
-// each vertex's finishing time in a DFS
+// Helper method for kosarajus algorithm to properly order vertices based on each vertex's finishing time in a DFS
   public void kosarajuOrder(int vertexNumber, boolean[] visited, Stack s) {
-      visited[vertexNumber] = true;
+      visited[vertexNumber] = true;     // This vertex has now been visited
 
-      for(Integer adj : adjList.get(vertexNumber)) {    // might be a problem
+      // For all of the current vertex's adjacents
+      for(Integer adj : adjList.get(vertexNumber)) {
+          // If the vertex has not been visited, visit it (DFS)
           if(visited[adj] == false) kosarajuOrder(adj, visited, s);
       }
 
+      // After all the vertices that are reachable from the current vertex are visited (DFS)
+      // Add the current vertex to the stack 
       s.push(new Integer(vertexNumber));
   }
 
   public void kosarajuDFSPrinter(int vertex, boolean[] visited) {
-      visited[vertex] = true;
-      System.out.print(vertex + " ");
+      visited[vertex] = true;               // This vertex has now been visited
+      System.out.print(vertex + " ");       // Add this vertex to a SCC
 
+      // For all of the current vertex's adjacents
       for(Integer adj : adjList.get(vertex)) {
+          // If the vertex has not been visited, visit it (DFS)
           if(visited[adj] == false) kosarajuDFSPrinter(adj, visited);
       }
   }
