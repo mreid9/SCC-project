@@ -40,7 +40,7 @@ public class Driver
       return;
     }
     initializeFromFile(args[0]);
-    
+
     out.println("========= GRAPH =======");
     graph.printGraph();
     Graph transpose = graph.transpose();
@@ -50,5 +50,7 @@ public class Driver
     graph.dfs();
     out.println("========= TARJAN =======");
     graph.tarjan();
+    out.println("========= KOSARAJU =======");
+    graph.kosarajus();
   }
 }

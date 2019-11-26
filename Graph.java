@@ -72,10 +72,58 @@ public class Graph
   }
 
   public void kosarajus() {
+      Stack<Integer> kosarajuStack = new Stack<Integer>();
+      boolean[] kosarajuVisited = new boolean[V];
+
+      // Sets that all vertices have not been visited yet
+      for(int v = 0; v < V; v++) kosarajuVisited[v] = false;
+
+      // Uses the helper method to make the stack have the correct order of vertices
+      // to be popped
+      for(int v = 0; v < V; v++) {
+          if(kosarajuVisited[v] == false) kosarajuOrder(v, kosarajuVisited, kosarajuStack);
+      }
+
+      // Calls our transpose function to get the transposed graph
+      Graph transposed = transpose();
+
+      // Resets the visited array to ensure all vertices have not been checked yet
+      // since we are now dealing with the transposed graph
+      for(int v = 0; v < V; v++) kosarajuVisited[v] = false;
+
+      while(!kosarajuStack.empty()) {
+          int currVertex = (int)kosarajuStack.pop();
+
+          if(kosarajuVisited[currVertex] == false) {
+              kosarajuDFSPrinter(currVertex, kosarajuVisited);
+              System.out.println();
+          }
+      }
     // call DFS
     // compute transpose
     // call DFS on transpose
     // add an SCC each time a dead end is reached
+  }
+
+// Helper method for kosarajus algorithm to properly order vertices based on
+// each vertex's finishing time in a DFS
+  public void kosarajuOrder(int vertexNumber, boolean[] visited, Stack s) {
+      visited[vertexNumber] = true;
+
+      for(Integer adj : adjList.get(vertexNumber)) {    // might be a problem
+          if(visited[adj] == false) kosarajuOrder(adj, visited, s);
+      }
+
+      s.push(new Integer(vertexNumber));
+  }
+
+  public void kosarajuDFSPrinter(int vertex, boolean[] visited) {
+      visited[vertex] = true;
+      System.out.print(vertex + " ");
+
+      for(Integer adj : adjList.get(vertex)) {
+          if(visited[adj] == false) kosarajuDFSPrinter(adj, visited);
+      }
   }
 
   private int tarjanId;
@@ -95,7 +143,7 @@ public class Graph
 	// Iterate and run tarjanDFS on each node
 	for (int i = 0; i < V; i++)
 		if (tarjanIds[i] == -1) tarjanDFS(i);
-	
+
 	// TODO: Use the low array to print out nodes in the same SCC
   	out.println("SCC's printed here");
   }
