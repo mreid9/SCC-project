@@ -49,8 +49,12 @@ public class Driver
     out.println("========= DFS =======");
     graph.dfs();
     out.println("========= TARJAN =======");
+    long start = currentTimeMillis();
     graph.tarjan();
+    out.println("milliseconds elapsed: " + ((long)currentTimeMillis() - start));
     out.println("========= KOSARAJU =======");
+    start = currentTimeMillis();
     graph.kosarajus();
+    out.println("milliseconds elapsed: " + ((long)currentTimeMillis() - start));
   }
 }
