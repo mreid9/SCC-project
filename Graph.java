@@ -124,10 +124,6 @@ public class Graph
               System.out.println();
           }
       }
-    // call DFS
-    // compute transpose
-    // call DFS on transpose
-    // add an SCC each time a dead end is reached
   }
 
 // Helper method for kosarajus algorithm to properly order vertices based on each vertex's finishing time in a DFS
@@ -139,14 +135,6 @@ public class Graph
           // If the vertex has not been visited, visit it (DFS)
           if(visited[adj] == false) kosarajuOrder(adj, visited, s);
       }
-
-      // Iterator<Integer> i = adjList.get(vertexNumber).iterator();
-      // while(i.hasNext()) {
-      //     int n = i.next();
-      //     if(!visited[n]) {
-      //         kosarajuOrder(n, visited, s);
-      //     }
-      // }
 
       // After all the vertices that are reachable from the current vertex are visited (DFS)
       // Add the current vertex to the stack
