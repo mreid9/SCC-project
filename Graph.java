@@ -169,9 +169,6 @@ public class Graph
 	// Iterate and run tarjanDFS on each node
 	for (int i = 0; i < V; i++)
 		if (tarjanIds[i] == -1) tarjanDFS(i);
-
-	// TODO: Use the low array to print out nodes in the same SCC
-  	out.println("SCC's printed here");
   }
 
   // Recursive helper function for the tarjan algorithm
@@ -188,12 +185,14 @@ public class Graph
 		if (tarjanStack.contains(to)) tarjanLow[at] = (tarjanLow[at] <= tarjanLow[to]) ? tarjanLow[at] : tarjanLow[to];
 	}
 
-	// Indicates the closing of an SCC, pop values of the SCC off the stack
+	// Indicates the closing of an SCC, pop values of the SCC off the stack and print out the SCC
 	if (tarjanIds[at] == tarjanLow[at]) {
 		for (Integer node = tarjanStack.pop();; node = tarjanStack.pop()) {
+			out.print(node + " ");
 			tarjanLow[node] = tarjanIds[at];
 			if (node == at) break;
 		}
+		out.println();
 	}
   }
 }
