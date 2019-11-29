@@ -45,7 +45,8 @@ public class Driver
     graph.printGraph();
     Graph transpose = graph.transpose();
     out.println("========= GRAPH TRANSPOSE =======");
-    transpose.printGraph();
+    // transpose.tPrintGraph();
+    graph.tPrintGraph();
     out.println("========= DFS =======");
     graph.dfs();
     out.println("========= TARJAN =======");

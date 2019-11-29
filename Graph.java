@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.Iterator;
 
 import static java.lang.System.*;
 
@@ -8,18 +9,28 @@ public class Graph
 {
   int V;
   ArrayList<List<Integer>> adjList;
+  ArrayList<List<Integer>> tAdjs;
 
   Graph(int V)
   {
     this.V = V;
     adjList = new ArrayList<List<Integer>>();
-    for(int i = 0; i < V ; i++)
+    // for(int i = 0; i < V ; i++)
+    //   adjList.add(new ArrayList<Integer>());
+    tAdjs = new ArrayList<List<Integer>>();
+    for(int i = 0; i < V ; i++) {
       adjList.add(new ArrayList<Integer>());
+      tAdjs.add(new ArrayList<Integer>());
+    }
   }
 
   // add edge to directed graph
   public void addEdge(int src, int dest) {
     adjList.get(src).add(dest);
+  }
+
+  public void tAddEdge(int s, int d) {
+      tAdjs.get(s).add(d);
   }
 
   // iterates over vertices and prints outgoing edges
@@ -33,12 +44,25 @@ public class Graph
     }
   }
 
+  // iterates over vertices and prints outgoing edges
+  public void tPrintGraph() {
+    for(int v = 0; v < V; v++)
+    {
+      out.println("Outgoing edges on vertex "+ v);
+      for(Integer edge: tAdjs.get(v))
+        out.print(v + "->" + edge + "  ");
+      out.println();
+    }
+  }
+
   // computes and returns transpose from original Graph
   public Graph transpose() {
     Graph transpose = new Graph(V);
     for (int v = 0; v < V; v++)
         for (Integer u : adjList.get(v))
-            transpose.addEdge(u, v);
+            // transpose.addEdge(u, v);
+            // transpose.tAddEdge(u, v);
+            tAddEdge(u, v);
     return transpose;
   }
 
@@ -116,8 +140,16 @@ public class Graph
           if(visited[adj] == false) kosarajuOrder(adj, visited, s);
       }
 
+      // Iterator<Integer> i = adjList.get(vertexNumber).iterator();
+      // while(i.hasNext()) {
+      //     int n = i.next();
+      //     if(!visited[n]) {
+      //         kosarajuOrder(n, visited, s);
+      //     }
+      // }
+
       // After all the vertices that are reachable from the current vertex are visited (DFS)
-      // Add the current vertex to the stack 
+      // Add the current vertex to the stack
       s.push(new Integer(vertexNumber));
   }
 
@@ -126,7 +158,7 @@ public class Graph
       System.out.print(vertex + " ");       // Add this vertex to a SCC
 
       // For all of the current vertex's adjacents
-      for(Integer adj : adjList.get(vertex)) {
+      for(Integer adj : tAdjs.get(vertex)) {
           // If the vertex has not been visited, visit it (DFS)
           if(visited[adj] == false) kosarajuDFSPrinter(adj, visited);
       }
