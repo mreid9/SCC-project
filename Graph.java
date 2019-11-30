@@ -155,23 +155,20 @@ public class Graph
   }
 
   public void bfs(int vertex, boolean[] visited) {
-    // Create a queue for BFS
+    // BFS queue
     Queue<Integer> queue = new LinkedList<>();
     List<Integer> currentVertex;
     int v;
 
-    // Mark the current node as visited and enqueue it
     visited[vertex] = true;
     queue.add(vertex);
 
     while (queue.size() != 0)
     {
-      // Dequeue a vertex from queue
+      // Dequeue current vertex
       v = queue.poll();
 
-      // Get all adjacent vertices of the dequeued vertex s
-      // If a adjacent has not been visited, then mark it
-      // visited and enqueue it
+      // visit each of its adjacents
       currentVertex = adjList.get(v);
       for (int i=0; i<currentVertex.size(); i++) {
         if (!visited[adjList.get(v).get(i)])
@@ -188,25 +185,19 @@ public class Graph
     String SC = new String("Graph is strongly connected");
     boolean[] visited = new boolean[V];
 
-    // Step 2: Do BFS traversal starting
+    // call BFS from vertex 0
     bfs(0, visited);
 
-    // If BFS traversal doesn’t visit all
-    // vertices, then return false.
     for (boolean v : visited)
-    if (!v) return notSC;
+      if (!v) return notSC;
 
-    // Step 3: Create a reversed graph
+    // create transpose
     Graph transposed = transpose();
-
-    // Mark all the vertices as not (For second BFS)
+    // unvisit verts for transpose
     for(int i = 0; i < V; i++)
       visited[i] = false;
 
-    // Do BFS for reversed graph
-    // starting from first vertex.
-    // Staring Vertex must be same starting
-    // point of first DFS
+    // BFS on transpose, still vertex 0
     transposed.bfs(0, visited);
 
     for (boolean v : visited)
