@@ -60,11 +60,12 @@ public class Graph
   // computes and returns transpose from original Graph
   public Graph transpose() {
     Graph transpose = new Graph(V);
-    for (int v = 0; v < V; v++)
-    for (Integer u : adjList.get(v))
-    // transpose.addEdge(u, v);
-    // transpose.tAddEdge(u, v);
-    tAddEdge(u, v);
+    for (int v = 0; v < V; v++) {
+      for (Integer u : adjList.get(v)) {
+        tAddEdge(u, v);
+        transpose.addEdge(u, v);
+      }
+    }
     return transpose;
   }
 
@@ -85,8 +86,7 @@ public class Graph
       if (!visited[index]) {
         visited[index] = true;
         for (Integer u : adjList.get(index))
-        if (!visited[u])
-        s.push(u);
+          if (!visited[u]) s.push(u);
       }
     }
 
@@ -170,13 +170,19 @@ public class Graph
 
       // visit each of its adjacents
       currentVertex = adjList.get(v);
-      for (int i=0; i<currentVertex.size(); i++) {
-        if (!visited[adjList.get(v).get(i)])
+      for (Integer u : currentVertex) {
+        if (!visited[u])
         {
-          visited[currentVertex.get(i)] = true;
-          queue.add(currentVertex.get(i));
+          visited[u] = true;
+          queue.add(u);
         }
       }
+    }
+
+    String seen;
+    for (int i=0; i<visited.length; i++) {
+      seen = (visited[i]) ? "visited" : "not visited";
+      out.println("Node " + i + " " + seen);
     }
   }
 
@@ -191,6 +197,7 @@ public class Graph
     for (boolean v : visited)
       if (!v) return notSC;
 
+
     // create transpose
     Graph transposed = transpose();
     // unvisit verts for transpose
@@ -201,7 +208,7 @@ public class Graph
     transposed.bfs(0, visited);
 
     for (boolean v : visited)
-    if (!v) return notSC;
+      if (!v) return notSC;
 
     return SC;
   }
