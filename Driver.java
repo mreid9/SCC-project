@@ -47,12 +47,12 @@ public class Driver
     out.println("========= GRAPH TRANSPOSE =======");
     // transpose.tPrintGraph();
     graph.tPrintGraph();
+    out.println("========= DFS =======");
+    graph.dfs();
     out.println("========= IS GRAPH STRONGLY CONNECTED =========");
     long start = System.nanoTime();
     out.println(graph.isGraphSC());
     out.println("microseconds elapsed: " + ((long)System.nanoTime() - start) / 1000);
-    out.println("========= DFS =======");
-    graph.dfs();
     out.println("========= TARJAN =======");
     start = System.nanoTime();
     graph.tarjan();

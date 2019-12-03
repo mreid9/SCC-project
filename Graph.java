@@ -102,12 +102,13 @@ public class Graph
     boolean[] kosarajuVisited = new boolean[V];
 
     // Sets that all vertices have not been visited yet
-    for(int v = 0; v < V; v++) kosarajuVisited[v] = false;
+    //for(int v = 0; v < V; v++) kosarajuVisited[v] = false;
 
     // Uses the helper method to make the stack have the correct order of vertices
     // to be popped
     for(int v = 0; v < V; v++) {
-      if(kosarajuVisited[v] == false) kosarajuOrder(v, kosarajuVisited, kosarajuStack);
+      if(kosarajuVisited[v] == false)
+        kosarajuOrder(v, kosarajuVisited, kosarajuStack);
     }
 
     // Calls our transpose function to get the transposed graph
@@ -133,9 +134,10 @@ public class Graph
     visited[vertexNumber] = true;     // This vertex has now been visited
 
     // For all of the current vertex's adjacents
-    for(Integer adj : adjList.get(vertexNumber)) {
+    for (Integer adj : adjList.get(vertexNumber)) {
       // If the vertex has not been visited, visit it (DFS)
-      if(visited[adj] == false) kosarajuOrder(adj, visited, s);
+      if(visited[adj] == false)
+        kosarajuOrder(adj, visited, s);
     }
 
     // After all the vertices that are reachable from the current vertex are visited (DFS)
@@ -178,12 +180,11 @@ public class Graph
         }
       }
     }
-
-    String seen;
-    for (int i=0; i<visited.length; i++) {
-      seen = (visited[i]) ? "visited" : "not visited";
-      out.println("Node " + i + " " + seen);
-    }
+    // String seen;
+    // for (int i=0; i<visited.length; i++) {
+    //   seen = (visited[i]) ? "visited" : "not visited";
+    //   out.println("Node " + i + " " + seen);
+    // }
   }
 
   public String isGraphSC() {
@@ -229,7 +230,7 @@ public class Graph
 
     // Iterate and run tarjanDFS on each node
     for (int i = 0; i < V; i++)
-    if (tarjanIds[i] == -1) tarjanDFS(i);
+      if (tarjanIds[i] == -1) tarjanDFS(i);
   }
 
   // Recursive helper function for the tarjan algorithm
