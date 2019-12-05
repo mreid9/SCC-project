@@ -124,7 +124,7 @@ public class Graph
       // if the current vertex has not been visited
       if(kosarajuVisited[currVertex] == false) {
         kosarajuDFSPrinter(currVertex, kosarajuVisited);  // calls DFS helper with the current vertex and the transposed graph
-        System.out.println();
+        //System.out.println();
       }
     }
   }
@@ -147,7 +147,7 @@ public class Graph
 
   public void kosarajuDFSPrinter(int vertex, boolean[] visited) {
     visited[vertex] = true;               // This vertex has now been visited
-    System.out.print(vertex + " ");       // Add this vertex to a SCC
+    //System.out.print(vertex + " ");       // Add this vertex to a SCC
 
     // For all of the current vertex's adjacents
     for(Integer adj : tAdjs.get(vertex)) {
@@ -217,16 +217,21 @@ public class Graph
   private int tarjanId;
   private int[] tarjanIds;
   private int[] tarjanLow;
+  private int[] tarjanInStack;
   private Stack<Integer> tarjanStack;
 
   public void tarjan() {
     tarjanId = 0;
     tarjanIds = new int[V];
     tarjanLow = new int[V];
+    tarjanInStack = new int[V];
     tarjanStack = new Stack<Integer>();
 
     // Set all node id's to be unvisited
-    for (int i = 0; i < V; i++) tarjanIds[i] = -1;
+    for (int i = 0; i < V; i++) {
+	    tarjanIds[i] = -1;
+	    tarjanInStack[i] = 0;
+    }
 
     // Iterate and run tarjanDFS on each node
     for (int i = 0; i < V; i++)
@@ -236,6 +241,7 @@ public class Graph
   // Recursive helper function for the tarjan algorithm
   private void tarjanDFS(int at) {
     tarjanStack.push(at);
+    tarjanInStack[at] = 1;
     tarjanIds[at] = tarjanLow[at] = tarjanId++;
 
     // Loop through all adjacent nodes connected to this one
@@ -244,17 +250,18 @@ public class Graph
       if (tarjanIds[to] == -1) tarjanDFS(to);
 
       // When backtrack, if the new node is on the stack, set the current node's low to the minimum of the two lows
-      if (tarjanStack.contains(to)) tarjanLow[at] = (tarjanLow[at] <= tarjanLow[to]) ? tarjanLow[at] : tarjanLow[to];
+      if (tarjanInStack[to] == 1) tarjanLow[at] = (tarjanLow[at] <= tarjanLow[to]) ? tarjanLow[at] : tarjanLow[to];
     }
 
     // Indicates the closing of an SCC, pop values of the SCC off the stack and print out the SCC
     if (tarjanIds[at] == tarjanLow[at]) {
       for (Integer node = tarjanStack.pop();; node = tarjanStack.pop()) {
-        out.print(node + " ");
+	tarjanInStack[node] = 0;
+        //out.print(node + " ");
         tarjanLow[node] = tarjanIds[at];
         if (node == at) break;
       }
-      out.println();
+      //out.println();
     }
   }
 }
